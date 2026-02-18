@@ -50,7 +50,7 @@ export PATH=/usr/local/git/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$PATH
 bindkey -v
 
 export TERM=xterm-256color
-export XDG_CONFIG_HOME=~/dotfiles
+# export XDG_CONFIG_HOME=~/dotfiles
 
 #補間
 # autoload -Uz compinit && compinit -C -d ~/.zcompdump
@@ -181,9 +181,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.cargo/env:$PATH"
 
-source $HOME/dotfiles/scripts/commands.sh
+source $HOME/scripts/commands.sh
 
-alias tm='~/dotfiles/scripts/tmux.sh'
+alias tm='~/scripts/tmux.sh'
 
 if (which zprof > /dev/null 2>&1) ;then
   zprof
