@@ -56,6 +56,14 @@ function fbr() {
 zle -N fbr
 bindkey '^b' fbr
 
+function fzf-select-history() {
+    BUFFER=$(history -n -r 1 | fzf --query "$LBUFFER" --reverse)
+    CURSOR=$#BUFFER
+    zle reset-prompt
+}
+zle -N fzf-select-history
+bindkey '^r' fzf-select-history
+
 function memo () {
     vim --cmd 'cd ~/memos' ~/memos/`memof $1`
 }
