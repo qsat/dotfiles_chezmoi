@@ -175,7 +175,7 @@ zi light arks22/tmuximum
 
 alias t=tmuximum
 
-### End of Zinit's installer chunk
+## End of Zinit's installer chunk
 
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
