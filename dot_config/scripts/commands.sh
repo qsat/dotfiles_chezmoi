@@ -58,7 +58,15 @@ bindkey '^b' fbr
 
 function fzf-select-history() {
     # BUFFER=$(history -n -r 1 | fzf --query "$LBUFFER" --reverse)
-    BUFFER=$(history -n -r 1 | awk '!a[$0]++' | fzf --query "$LBUFFER" --reverse)
+    # BUFFER=$(history -n -r 1 | awk '!a[$0]++' | fzf --query "$LBUFFER" --reverse)
+
+    # 1. history -n -r 1 : 履歴を番号なし、逆順で取得
+    # 2. sed : 行頭と行末の余計な空白を削除
+    # 3. awk : 既に出現した行をスキップ（時系列を維持）
+    BUFFER=$(history -n -r 1 | \
+             sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | \
+             awk '!a[$0]++' | \
+             fzf --query "$LBUFFER" --reverse)
     CURSOR=$#BUFFER
     zle reset-prompt
 }
