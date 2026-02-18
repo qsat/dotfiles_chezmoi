@@ -1,0 +1,191 @@
+# 補完キャッシュのパス
+zcompdump="$HOME/.zcompdump"
+# キャッシュが新しい（24時間以内）場合はスキャンをスキップして読み込む
+if [[ -s "$zcompdump" && (! -f "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+    # バックグラウンドでコンパイルして次回の起動を速くする
+    zcompile "$zcompdump"
+fi
+
+# compinit を高速に呼び出す
+autoload -Uz compinit
+if [[ -n "$zcompdump"(#qN.m-1) ]]; then
+    compinit -C -d "$zcompdump"
+else
+    compinit -d "$zcompdump"
+fi
+
+if [ $DOTFILES/.zshrc -nt ~/.zshrc.zwc ]; then
+  zcompile ~/.zshrc
+fi
+
+if [ -f ~/.zshrc_secret ]; then
+    source ~/.zshrc_secret
+fi
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+  
+alias vim=nvim
+alias awsd='sudo docker run --rm -it -v ~/.aws:/root/.aws -v $PWD:/tmp amazon/aws-cli'
+
+export DOCKER_BUILDKIT=0
+export COMPOSE_DOCKER_CLI_BUILD=0
+
+alias vime='vim $(fzf)'
+alias gl="git log --graph --pretty='format:%C(yellow)%h%Creset %C(White)%cd%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset' --date=iso"
+alias ctags='/usr/local/Cellar/ctags/5.8/bin/ctags'
+
+#エディタ
+export EDITOR=vim
+export FZF_DEFAULT_OPTS='
+  --bind ctrl-j:down,ctrl-k:up
+  --color fg:242,bg:234,hl:65,fg+:15,bg+:234,hl+:108
+  --color info:108,prompt:109,spinner:108,pointer:168,marker:168
+'
+
+export JDTLS_JVM_ARGS="-javaagent:$HOME/.local/share/nvim/mason/packages/jdtls/lombok.jar"
+export ANDROID_HOME=/usr/local/share/android-sdk
+export PATH=/usr/local/git/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$PATH
+
+#キーバインド
+bindkey -v
+
+export TERM=xterm-256color
+export XDG_CONFIG_HOME=~/dotfiles
+
+#補間
+# autoload -Uz compinit && compinit -C -d ~/.zcompdump
+
+#文字コード
+export LANG=ja_JP.UTF-8
+
+#プロンプト
+autoload -Uz add-zsh-hook
+autoload -Uz colors; colors
+
+#履歴
+#履歴を保存するファイル指定
+HISTFILE="$HOME/.zsh_history"
+
+#履歴の件数
+HISTSIZE=100000
+SAVEHIST=100000
+
+#重複した履歴を保存しない
+setopt hist_ignore_dups
+
+#履歴を共有する
+setopt share_history
+
+#先頭にスペースを入れると履歴に残さない
+setopt hist_ignore_space
+
+#cdの設定
+#ディレクトリ名だけで移動する。
+setopt auto_cd
+
+#自動でpushdする
+setopt auto_pushd
+
+#pushdの履歴は残さない。
+setopt pushd_ignore_dups
+
+alias ll='ls -alh'
+alias lla='ls -alh'
+alias less='less -qR'
+alias lesss='less -qRsS'
+
+#ビープ音ならなさない
+setopt nobeep
+
+#改行のない出力をプロンプトで上書きするのを防ぐ
+unsetopt promptcr
+
+# export DOCKER_HOST="localhost"
+
+#履歴の検索
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^N" history-beginning-search-forward-end 
+#履歴のインクリメンタル検索でワイルドカード利用可能
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^S' history-incremental-pattern-search-forward
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+### Added by Zinit's installer
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+zinit ice depth"1"
+zinit ice pick"async.zsh" src"pure.zsh" # with zsh-async library that's bundled with it.
+zinit light sindresorhus/pure
+
+# 非同期処理できるようになる
+zi ice wait"1" lucid
+zi light mafredri/zsh-async
+
+# direnv
+zinit ice atinit'eval "$(direnv hook zsh)"'
+zinit light zdharma-continuum/null
+
+# anyenv
+zinit ice wait"0" lucid atinit'eval "$(anyenv init -)"'
+zinit light zdharma-continuum/null
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/01017830/.sdkman"
+# [[ -s "/Users/01017830/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/01017830/.sdkman/bin/sdkman-init.sh"
+zinit ice wait'1' lucid
+zinit snippet "$SDKMAN_DIR/bin/sdkman-init.sh"
+
+# 構文のハイライト(https://github.com/zsh-users/zsh-syntax-highlighting)
+zi ice wait"1" lucid
+zi light zsh-users/zsh-syntax-highlighting
+# 過去に入力したコマンドの履歴が灰色のサジェストで出る
+zi ice wait lucid
+zi light zsh-users/zsh-autosuggestions
+# 補完強化
+zi ice wait lucid
+zi light zsh-users/zsh-completions
+# ディレクトリ履歴
+zi ice wait pick"*.sh" lucid
+zi light rupa/z
+
+zi ice lucid as"command"
+zi light arks22/tmuximum
+
+alias t=tmuximum
+
+### End of Zinit's installer chunk
+
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+export PATH="$HOME/.cargo/env:$PATH"
+
+source $HOME/dotfiles/scripts/commands.sh
+
+alias tm='~/dotfiles/scripts/tmux.sh'
+
+if (which zprof > /dev/null 2>&1) ;then
+  zprof
+fi
+

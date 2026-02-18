@@ -1,0 +1,66 @@
+[window]
+
+dimensions = { columns = 200, lines = 60 }
+padding = { x = 24, y = 24}
+# opacity = 0.95
+decorations = "Buttonless"
+
+[scrolling]
+history = 100000
+multiplier = 3
+
+[font]
+# normal = { family = 'MigMix 2M', style = "Regular" }
+# normal = { family= 'Circle M+ 1m', style= "light" }
+# normal = { family= 'Rounded Mgen+ 1m', style= "light" }
+# normal = { family= 'Artistic Code Pro', style= "Light" }
+normal = { family = 'RoundedMgen+ 1m Nerd Font', style = "Light" }
+# normal = { family = 'Hackgen Console NF', style = "Regular" }
+
+# bold = { family= 'MigMix 2M', style= "Regular" }
+# bold = { family = 'Circle M+ 1m', style = "medium" }
+# bold = { family= 'Rounded Mgen+ 1m', style= "bold" }
+# bold = { family= 'Artistic Code Pro ', style= "Regular" }
+# bold = { family = 'Cica', style = "Regular" }
+# bold = { family = 'Hackgen Console NF', style = "Bold" }
+bold = { family = 'RoundedMgen+ 1m Nerd Font', style = "Regular" }
+
+size = 18
+# あいうえおかきくけこ
+
+offset = { x = 1, y = 1 }
+glyph_offset = { x = 0, y = 0}
+
+[colors.primary]
+background = "#1c1c1c"
+foreground = "#b9b0b9"
+
+[colors.normal]
+black = "#1c1c1c"
+red = "#e27878"
+green = "#b4be82"
+yellow = "#e2a478"
+blue = "#84a0c6"
+magenta = "#a093c7"
+cyan = "#89b8c2"
+white = "#c6c8d1"
+
+[colors.bright]
+black = "#6b7089"
+red = "#e98989"
+green = "#c0ca8e"
+yellow = "#e9b189"
+blue = "#91acd1"
+magenta = "#ada0d3"
+cyan = "#95c4ce"
+white = "#d2d4de"
+
+[terminal.shell]
+program = "/bin/zsh"
+args = [
+  "-l",
+  "-c",
+  "-i",
+  "tmuximum"
+  # "/opt/homebrew/bin/tmux a -t 0 || /opt/homebrew/bin/tmux -u",
+]
