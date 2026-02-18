@@ -70,8 +70,15 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
 SAVEHIST=100000
 
-#重複した履歴を保存しない
+
+# 同じコマンドを連続して実行した場合、履歴に保存しない
 setopt hist_ignore_dups
+
+# 履歴の中に同じコマンドがあれば、古い方を削除して新しい方を残す
+setopt hist_ignore_all_dups
+
+# 履歴ファイルに書き出す際、古い重複を削除する
+setopt hist_save_no_dups
 
 #履歴を共有する
 setopt share_history
