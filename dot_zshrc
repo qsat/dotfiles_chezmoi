@@ -181,9 +181,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.cargo/env:$PATH"
 
-source $HOME/scripts/commands.sh
+source $HOME/.config/scripts/commands.sh
 
-alias tm='~/scripts/tmux.sh'
+alias tm='~/.config/scripts/tmux.sh'
 
 if (which zprof > /dev/null 2>&1) ;then
   zprof
