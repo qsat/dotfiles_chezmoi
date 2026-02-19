@@ -26,7 +26,6 @@ keymap("n", "gs", ":vertical wincmd f<CR>", opts)
 keymap("n", "gn", "<C-w>gf", opts)
 keymap("n", "<C-h>", "<C-w>W", opts)
 keymap("n", "<C-l>", "<C-w>w", opts)
-keymap("t", "<ESC>", [[<C-\><C-n>]], term_opts)
 keymap("t", "<C-h>", [[<C-\><C-n><C-w>W]], term_opts)
 keymap("t", "<C-l>", [[<C-\><C-n><C-w>w]], term_opts)
 keymap("n", "<Leader>z", "<C-w>T", opts)
@@ -52,6 +51,7 @@ keymap("n", "<Leader>a", ":Gcd <bar> Ack!<Space>", { noremap = true })
 
 -- nmap <ESC><ESC> :nohlsearch<CR>
 keymap("n", "<ESC><ESC>", ":nohlsearch", opts)
+keymap("t", "<ESC><ESC>", [[<C-\><C-n>]], term_opts)
 -- inoremap jk <ESC>
 keymap("i", "jj", "<ESC>", opts)
 
