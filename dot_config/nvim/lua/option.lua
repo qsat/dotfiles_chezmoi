@@ -54,6 +54,7 @@ local options = {
 }
 
 vim.opt.shortmess:append("c")
+vim.g.sidekick_nes = false
 
 for k, v in pairs(options) do
 	vim.opt[k] = v
