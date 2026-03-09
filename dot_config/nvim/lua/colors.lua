@@ -70,6 +70,7 @@ set({
 	SignColumn = { fg = "#707070", bg = "#202020" },
 
 	VertSplit = { fg = "#1c1c1c", bg = "#1c1c1c" },
+        WinSeparator = { fg = "#1c1c1c", bg = "#1c1c1c" },
 	ModeMsg = { fg = "#1c1c1c", bg = "#1c1c1c" },
 
 	LspFloatWinBorder = { fg = "#202021", bg = "#202021" },
