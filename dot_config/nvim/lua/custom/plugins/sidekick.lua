@@ -22,9 +22,10 @@ return {
 			desc = "Goto/Apply Next Edit Suggestion",
 		},
 		{
-			"<leader>aa",
+			"<leader>p",
 			function()
-				require("sidekick.cli").toggle({ name = "cursor", focus = true })
+				require("sidekick.cli").toggle({ focus = true })
+				-- require("sidekick.cli").toggle({ name = "cursor", focus = true })
 			end,
 			desc = "Sidekick Toggle CLI",
 		},
