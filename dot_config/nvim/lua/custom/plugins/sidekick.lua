@@ -5,7 +5,9 @@ return {
 	---@class sidekick.Config
 	opts = {
 		cli = {
-			mux = { backend = "tmux", enabled = true },
+		mux = { backend = "tmux", enabled = true },
+		win = { layout = "left", border = "none" },
+                	winhl = "Normal:Normal,FloatBorder:Normal",
 		},
 	},
 	keys = {
