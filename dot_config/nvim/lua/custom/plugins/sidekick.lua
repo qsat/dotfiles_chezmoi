@@ -8,11 +8,10 @@ return {
 			mux = { backend = "tmux", enabled = true },
 			win = { layout = "left", border = "none" },
                 	winhl = "Normal:Normal,FloatBorder:Normal",
-			view =  {
-				position = "left",
-			},
 		},
-		side = "left",
+		tools = {
+			copilot = { cmd = { "copilot" } },
+		}
 	},
 	keys = {
 		-- {"t", "<C-p>", [[<C-\><C-n>:CursorAgent<CR>]], { desc = "Cursor Agent: Toggle terminal" }}
@@ -31,6 +30,13 @@ return {
 			"<leader>p",
 			function()
 				require("sidekick.cli").toggle({ name = "cursor", focus = true })
+			end,
+			desc = "Sidekick Toggle CLI",
+		},
+		{
+			"<leader>;",
+			function()
+				require("sidekick.cli").toggle({ name = "copilot", focus = true })
 			end,
 			desc = "Sidekick Toggle CLI",
 		},
