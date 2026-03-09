@@ -9,6 +9,7 @@ return {
 			win = { layout = "left", border = "none" },
                 	winhl = "Normal:Normal,FloatBorder:Normal",
 		},
+		side = "left",
 	},
 	keys = {
 		-- {"t", "<C-p>", [[<C-\><C-n>:CursorAgent<CR>]], { desc = "Cursor Agent: Toggle terminal" }}
