@@ -196,3 +196,9 @@ if (which zprof > /dev/null 2>&1) ;then
   zprof
 fi
 
+# bun completions
+[ -s "/Users/01017830/.bun/_bun" ] && source "/Users/01017830/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"       
