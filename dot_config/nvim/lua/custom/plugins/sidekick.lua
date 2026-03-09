@@ -37,8 +37,7 @@ return {
 		{
 			"<leader>aa",
 			function()
-				require("sidekick.cli").toggle({ focus = true })
-				-- require("sidekick.cli").toggle({ focus = true })
+				require("sidekick.cli").select({ focus = true })
 			end,
 			desc = "Sidekick Toggle CLI",
 		},
