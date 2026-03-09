@@ -8,6 +8,9 @@ return {
 			mux = { backend = "tmux", enabled = true },
 			win = { layout = "left", border = "none" },
                 	winhl = "Normal:Normal,FloatBorder:Normal",
+			view =  {
+				position = "left",
+			},
 		},
 		side = "left",
 	},
