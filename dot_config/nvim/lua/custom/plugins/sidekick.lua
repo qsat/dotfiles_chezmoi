@@ -30,8 +30,15 @@ return {
 		{
 			"<leader>p",
 			function()
+				require("sidekick.cli").toggle({ name = "cursor", focus = true })
+			end,
+			desc = "Sidekick Toggle CLI",
+		},
+		{
+			"<leader>aa",
+			function()
 				require("sidekick.cli").toggle({ focus = true })
-				-- require("sidekick.cli").toggle({ name = "cursor", focus = true })
+				-- require("sidekick.cli").toggle({ focus = true })
 			end,
 			desc = "Sidekick Toggle CLI",
 		},
