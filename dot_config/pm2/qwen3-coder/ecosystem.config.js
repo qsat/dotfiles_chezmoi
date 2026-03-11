@@ -26,8 +26,9 @@ module.exports = {
         "q4_0",
         "--cache-type-v",
         "q4_0",
-        "--tool-call-parser",
-        "qwen3_coder",
+        "--chat-template-kwargs",
+        '{"enable_thinking":true}', // 思考機能を使いたい場合
+        "--jinja",
       ].join(" "),
       interpreter: "none", // バイナリを直接実行する場合
     },
