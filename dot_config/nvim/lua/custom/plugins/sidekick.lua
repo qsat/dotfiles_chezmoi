@@ -13,6 +13,7 @@ return {
 			copilot = { cmd = { "copilot" } },
 			cursor = { cmd = { "cursor-agent" } },
 			aider = { cmd = { "aider" } },
+			crush = { cmd = { "crush" } },
 		},
 	},
 	keys = {
