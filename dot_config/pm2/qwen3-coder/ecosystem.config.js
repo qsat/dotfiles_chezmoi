@@ -1,3 +1,6 @@
+const os = require("os");
+const path = require("path");
+
 module.exports = {
   apps: [
     {
@@ -5,11 +8,14 @@ module.exports = {
       script: "llama-server",
       args: [
         "--model",
-        "~/.cache/huggingface/hub/models--unsloth--Qwen3-Coder-30B-A3B-Instruct-GGUF/snapshots/b17cb02dd882d5b6ab62fc777ad2995f19668350/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf",
+        path.resolve(
+          os.homedir(),
+          ".cache/huggingface/hub/models--unsloth--Qwen3-Coder-30B-A3B-Instruct-GGUF/snapshots/b17cb02dd882d5b6ab62fc777ad2995f19668350/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf",
+        ),
         "--seed",
         "3407",
         "--temp",
-        "0.1",
+        "0.5",
         "--top-p",
         "0.95",
         "--min-p",
@@ -26,9 +32,6 @@ module.exports = {
         "q4_0",
         "--cache-type-v",
         "q4_0",
-        "--chat-template-kwargs",
-        '{"enable_thinking":true}', // 思考機能を使いたい場合
-        "--jinja",
       ].join(" "),
       interpreter: "none", // バイナリを直接実行する場合
     },
