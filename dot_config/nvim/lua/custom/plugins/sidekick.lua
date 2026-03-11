@@ -7,11 +7,13 @@ return {
 		cli = {
 			mux = { backend = "tmux", enabled = true },
 			win = { layout = "left", border = "none" },
-                	winhl = "Normal:Normal,FloatBorder:Normal",
+			winhl = "Normal:Normal,FloatBorder:Normal",
 		},
 		tools = {
 			copilot = { cmd = { "copilot" } },
-		}
+			cursor = { cmd = { "cursor-agent" } },
+			aider = { cmd = { "aider" } },
+		},
 	},
 	keys = {
 		-- {"t", "<C-p>", [[<C-\><C-n>:CursorAgent<CR>]], { desc = "Cursor Agent: Toggle terminal" }}
