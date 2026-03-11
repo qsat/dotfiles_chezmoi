@@ -1,0 +1,9 @@
+# ~/.aider.conf.yml
+model: openai/qwen3-coder
+openai-api-base: http://127.0.0.1:21434/v1
+openai-api-key: no-key
+
+# 常に適用したい便利なオプション
+edit-format: diff
+stream: true
+dark-mode: true # ターミナルの背景が黒い場合
