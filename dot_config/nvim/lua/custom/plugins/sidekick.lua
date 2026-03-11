@@ -12,17 +12,7 @@ return {
 		tools = {
 			copilot = { cmd = { "copilot" } },
 			cursor = { cmd = { "cursor-agent" } },
-			aider = {
-				cmd = {
-					"aider",
-					"--model",
-					"openai/qwen3-coder",
-					"--openai-api-base",
-					"http://127.0.0.1:21434/v1",
-					"--openai-api-key",
-					"no-key",
-				},
-			},
+			aider = { cmd = { "aider" } },
 		},
 	},
 	keys = {
