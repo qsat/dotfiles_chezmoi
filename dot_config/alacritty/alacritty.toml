@@ -25,7 +25,7 @@ normal = { family = 'RoundedMgen+ 1m Nerd Font', style = "Light" }
 # bold = { family = 'Hackgen Console NF', style = "Bold" }
 bold = { family = 'RoundedMgen+ 1m Nerd Font', style = "Regular" }
 
-size = 17
+size = 16
 # あいうえおかきくけこ
 
 offset = { x = 1, y = 1 }
