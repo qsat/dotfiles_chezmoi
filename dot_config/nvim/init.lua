@@ -78,6 +78,7 @@ require("lazy").setup({
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			local servers = {
+				-- tsgo は Mason にないのでここでは空テーブルのみ
 				tsgo = {},
 				lua_ls = {
 					settings = {
@@ -98,39 +99,49 @@ require("lazy").setup({
 				},
 			}
 
+			-- 2. tsgo の定義を「新形式」で追加
+			-- もし lspconfig に tsgo がない場合、ここで手動定義します
+			local configs = require("lspconfig.configs")
+			if not configs.tsgo then
+				configs.tsgo = {
+					default_config = {
+						cmd = { "tsgo", "lsp" },
+						filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+						root_dir = require("lspconfig.util").root_pattern("package.json", "tsconfig.json", ".git"),
+						single_file_support = true,
+					},
+				}
+			end
+
 			require("mason").setup()
 
-			-- You can add other tools here that you want Mason to install
-			-- for you, so that they are available from within Neovim.
+			-- tsgo 以外を Mason でインストール
 			local ensure_installed = {}
 			for name, _ in pairs(servers) do
 				if name ~= "tsgo" then
 					table.insert(ensure_installed, name)
 				end
 			end
-			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format Lua code
-			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
+			-- 3. Mason 管理下のサーバーをセットアップ
 			require("mason-lspconfig").setup({
-				ensure_installed = {},
-				automatic_installation = true,
 				handlers = {
 					function(server_name)
+						-- tsgo は Mason 管理外なので handler では無視する
+						if server_name == "tsgo" then
+							return
+						end
+
 						local server = servers[server_name] or {}
-						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+						server.capabilities = capabilities -- 共通の capabilities を適用
 						require("lspconfig")[server_name].setup(server)
-						-- jdtls = function()
-						-- 	require("java").setup({
-						-- 		-- Your custom jdtls settings goes here
-						-- 	})
-						-- 	require("lspconfig").jdtls.setup({
-						-- 		-- Your custom nvim-java configuration goes here
-						-- 	})
 					end,
 				},
 			})
-			require("lspconfig").tsgo.setup(servers.tsgo or {})
+
+			-- 4. tsgo を個別にセットアップ (Deprecated 警告を避けるため直接 setup を呼ぶ)
+			require("lspconfig").tsgo.setup(servers.tsgo)
 		end,
 	},
 
