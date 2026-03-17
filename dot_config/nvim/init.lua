@@ -79,32 +79,41 @@ require("lazy").setup({
 
 			-- require("lspconfig") を変数に入れない（警告が出るため）
 
+			-- 1. tsgo のカスタム定義 (lspconfig本体をロードせずに注入)
+			-- これを最初に行うことで、後の setup が tsgo を認識できるようになります
+			local lsp_configs = require("lspconfig.configs")
+			if not lsp_configs.tsgo then
+				lsp_configs.tsgo = {
+					default_config = {
+						cmd = { "tsgo", "lsp" },
+						filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+						root_dir = require("lspconfig.util").root_pattern("package.json", "tsconfig.json", ".git"),
+						single_file_support = true,
+					},
+				}
+			end
+
 			local servers = {
-				tsgo = {
-					cmd = { "tsgo", "lsp" },
-					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-					root_dir = require("lspconfig.util").root_pattern("package.json", "tsconfig.json", ".git"),
-				},
+				tsgo = {},
 				lua_ls = {
 					settings = { Lua = { completion = { callSnippet = "Replace" } } },
 				},
 				eslint = {},
 			}
 
-			-- 1. Mason のセットアップ（インストール管理のみ）
 			require("mason").setup()
 			require("mason-lspconfig").setup({
 				ensure_installed = { "lua_ls", "eslint" },
 			})
 
-			-- 2. サーバーを個別にセットアップ
-			-- handlers を使わず、直接個別の設定モジュールを require する
+			-- 2. 各サーバーをセットアップ
+			-- 警告を回避するため、require("lspconfig") という変数に代入せず、
+			-- 直接インデックスアクセスして setup を呼びます。
 			for server_name, server_config in pairs(servers) do
-				server_config.capabilities = capabilities -- 共通の能力設定
+				server_config.capabilities = capabilities -- 共通の capabilities
 
-				-- ポイント: require("lspconfig") ではなく、個別の設定ファイルを直接呼ぶ
-				-- これでトップレベルの警告トラップを回避できます
-				require("lspconfig.configs." .. server_name).setup(server_config)
+				-- ここが重要：[server_name] へのアクセスで setup を実行
+				require("lspconfig")[server_name].setup(server_config)
 			end
 		end,
 	},
