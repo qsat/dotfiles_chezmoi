@@ -125,6 +125,7 @@ require("lazy").setup({
 					end,
 				},
 			})
+			require("lspconfig").tsgo.setup(servers.tsgo or {})
 		end,
 	},
 
