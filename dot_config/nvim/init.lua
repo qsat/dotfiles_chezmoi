@@ -77,6 +77,21 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
+			local lspconfig = require("lspconfig")
+			local mason_lspconfig = require("mason-lspconfig")
+
+			-- 1. tsgo のカスタム定義 (lspconfig に未定義の場合)
+			if not lspconfig.configs.tsgo then
+				lspconfig.configs.tsgo = {
+					default_config = {
+						cmd = { "tsgo", "lsp" },
+						filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+						root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", ".git"),
+						single_file_support = true,
+					},
+				}
+			end
+
 			local servers = {
 				-- tsgo は Mason にないのでここでは空テーブルのみ
 				tsgo = {},
@@ -115,33 +130,22 @@ require("lazy").setup({
 
 			require("mason").setup()
 
-			-- tsgo 以外を Mason でインストール
-			local ensure_installed = {}
-			for name, _ in pairs(servers) do
-				if name ~= "tsgo" then
-					table.insert(ensure_installed, name)
-				end
-			end
-			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
 			-- 3. Mason 管理下のサーバーをセットアップ
-			require("mason-lspconfig").setup({
+			mason_lspconfig.setup({
 				handlers = {
 					function(server_name)
-						-- tsgo は Mason 管理外なので handler では無視する
-						if server_name == "tsgo" then
-							return
-						end
+						-- 警告を避けるため、一度サーバー設定を取得
+						local config = servers[server_name] or {}
+						config.capabilities = capabilities -- 共通の capabilities
 
-						local server = servers[server_name] or {}
-						server.capabilities = capabilities -- 共通の capabilities を適用
-						require("lspconfig")[server_name].setup(server)
+						-- 修正ポイント: 直接 setup を呼ばず、lspconfig を通じて実行
+						lspconfig[server_name].setup(config)
 					end,
 				},
 			})
 
-			-- 4. tsgo を個別にセットアップ (Deprecated 警告を避けるため直接 setup を呼ぶ)
-			require("lspconfig").tsgo.setup(servers.tsgo)
+			-- 4. tsgo を個別にセットアップ (Mason を通さない)
+			lspconfig.tsgo.setup(servers.tsgo)
 		end,
 	},
 
