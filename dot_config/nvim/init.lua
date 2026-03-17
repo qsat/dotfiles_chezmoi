@@ -77,61 +77,35 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-			-- config = function() ... の中身
-			local mason_lspconfig = require("mason-lspconfig")
-			-- 直接 require("lspconfig") せず、必要なモジュールだけ取得する
-			local lspconfig_util = require("lspconfig.util")
-
-			-- 1. tsgo のカスタム定義 (lspconfig に未定義の場合のみ)
-			-- ここで require("lspconfig").configs を使うと警告が出るため、内部モジュールを直接叩く
-			local configs = require("lspconfig.configs")
-			if not configs.tsgo then
-				configs.tsgo = {
-					default_config = {
-						cmd = { "tsgo", "lsp" },
-						filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-						root_dir = lspconfig_util.root_pattern("package.json", "tsconfig.json", ".git"),
-						single_file_support = true,
-					},
-				}
-			end
+			-- require("lspconfig") を変数に入れない（警告が出るため）
 
 			local servers = {
-				tsgo = {},
+				tsgo = {
+					cmd = { "tsgo", "lsp" },
+					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+					root_dir = require("lspconfig.util").root_pattern("package.json", "tsconfig.json", ".git"),
+				},
 				lua_ls = {
 					settings = { Lua = { completion = { callSnippet = "Replace" } } },
 				},
-				eslint = {
-					settings = {
-						codeAction = {
-							disableRuleComment = { enable = true, location = "separateLine" },
-							showDocumentation = { enable = true },
-						},
-					},
-				},
+				eslint = {},
 			}
 
+			-- 1. Mason のセットアップ（インストール管理のみ）
 			require("mason").setup()
-
-			-- 2. Mason 管理下のサーバーをセットアップ
-			mason_lspconfig.setup({
-				handlers = {
-					function(server_name)
-						-- tsgo は Mason にないのでここでは無視
-						if server_name == "tsgo" then
-							return
-						end
-
-						local server_config = servers[server_name] or {}
-						server_config.capabilities = capabilities
-						-- 警告を避けるため、require("lspconfig")[name] 形式で呼び出す
-						require("lspconfig")[server_name].setup(server_config)
-					end,
-				},
+			require("mason-lspconfig").setup({
+				ensure_installed = { "lua_ls", "eslint" },
 			})
 
-			-- 3. tsgo を個別にセットアップ (Mason を通さない)
-			require("lspconfig").tsgo.setup(servers.tsgo)
+			-- 2. サーバーを個別にセットアップ
+			-- handlers を使わず、直接個別の設定モジュールを require する
+			for server_name, server_config in pairs(servers) do
+				server_config.capabilities = capabilities -- 共通の能力設定
+
+				-- ポイント: require("lspconfig") ではなく、個別の設定ファイルを直接呼ぶ
+				-- これでトップレベルの警告トラップを回避できます
+				require("lspconfig.configs." .. server_name).setup(server_config)
+			end
 		end,
 	},
 
