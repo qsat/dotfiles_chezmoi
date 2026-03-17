@@ -202,4 +202,4 @@ fi
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
+export ANTHROPIC_BASE_URL=http://localhost:21434/v1
