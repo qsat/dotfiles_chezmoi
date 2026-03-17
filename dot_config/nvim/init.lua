@@ -77,22 +77,17 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-			-- 1. tsgo のカスタム定義 (lspconfig本体をロードせずに注入)
-			-- これを最初に行うことで、後の setup が tsgo を認識できるようになります
-			local lsp_configs = require("lspconfig.configs")
-			if not lsp_configs.tsgo then
-				lsp_configs.tsgo = {
-					default_config = {
-						cmd = { "tsgo", "lsp" },
-						filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-						root_dir = require("lspconfig.util").root_pattern("package.json", "tsconfig.json", ".git"),
-						single_file_support = true,
-					},
-				}
-			end
+			-- 1. tsgo の設定を直接定義 (lspconfig を介さない)
+			local tsgo_config = {
+				cmd = { "tsgo", "lsp" },
+				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+				-- 警告を避けるため util ではなく直接 lua でルート判定
+				root_dir = vim.fs.root(0, { "package.json", "tsconfig.json", ".git" }),
+			}
 
+			-- 2. サーバーリストと設定
 			local servers = {
-				tsgo = {},
+				tsgo = tsgo_config,
 				lua_ls = {
 					settings = { Lua = { completion = { callSnippet = "Replace" } } },
 				},
@@ -104,14 +99,14 @@ require("lazy").setup({
 				ensure_installed = { "lua_ls", "eslint" },
 			})
 
-			-- 2. 各サーバーをセットアップ
-			-- 警告を回避するため、require("lspconfig") という変数に代入せず、
-			-- 直接インデックスアクセスして setup を呼びます。
+			-- 3. 【重要】新方式 (vim.lsp.enable) でサーバーを起動
+			-- require('lspconfig') を一切使わないことで警告を回避します
 			for server_name, server_config in pairs(servers) do
 				server_config.capabilities = capabilities -- 共通の capabilities
 
-				-- ここが重要：[server_name] へのアクセスで setup を実行
-				require("lspconfig")[server_name].setup(server_config)
+				-- Neovim 0.11+ の標準コマンドでセットアップ
+				-- これにより lspconfig の Deprecated 警告トラップを完全にバイパスします
+				vim.lsp.enable(server_name, server_config)
 			end
 		end,
 	},
