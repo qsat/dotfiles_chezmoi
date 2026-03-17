@@ -78,7 +78,7 @@ require("lazy").setup({
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			local servers = {
-				--tsgo = {},
+				tsgo = {},
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -102,7 +102,12 @@ require("lazy").setup({
 
 			-- You can add other tools here that you want Mason to install
 			-- for you, so that they are available from within Neovim.
-			local ensure_installed = vim.tbl_keys(servers or {})
+			local ensure_installed = {}
+			for name, _ in pairs(servers) do
+				if name ~= "tsgo" then
+					table.insert(ensure_installed, name)
+				end
+			end
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
 			})
