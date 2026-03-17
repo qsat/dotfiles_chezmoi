@@ -91,7 +91,14 @@ require("lazy").setup({
 				lua_ls = {
 					settings = { Lua = { completion = { callSnippet = "Replace" } } },
 				},
-				eslint = {},
+				eslint = {
+					settings = {
+						codeAction = {
+							disableRuleComment = { enable = true, location = "separateLine" },
+							showDocumentation = { enable = true },
+						},
+					},
+				},
 			}
 
 			require("mason").setup()
