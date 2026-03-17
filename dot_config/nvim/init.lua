@@ -77,8 +77,6 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-			-- require("lspconfig") を変数に入れない（警告が出るため）
-
 			-- 1. tsgo のカスタム定義 (lspconfig本体をロードせずに注入)
 			-- これを最初に行うことで、後の setup が tsgo を認識できるようになります
 			local lsp_configs = require("lspconfig.configs")
