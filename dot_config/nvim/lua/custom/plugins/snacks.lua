@@ -22,6 +22,9 @@ return {
 	"folke/snacks.nvim",
 	---@type table<string, any>
 	opts = {
+		image = {
+			enabled = true,
+		},
 		picker = {
 			enable = true,
 			prompt = "   ",
