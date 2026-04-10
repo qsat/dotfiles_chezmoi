@@ -26,7 +26,7 @@ return {
 			enabled = true,
 		},
 		picker = {
-			enable = true,
+			enabled = true,
 			prompt = "   ",
 			formatters = {
 				file = { icon_width = 3 },
