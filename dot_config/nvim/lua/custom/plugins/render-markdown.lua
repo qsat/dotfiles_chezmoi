@@ -7,6 +7,7 @@ return {
 	---@type render.md.UserConfig
 	opts = {
 		heading = {
+			enabled = false,
 			-- 見出しの左側に表示される記号（#）の扱い
 			-- 'overlay' は # をアイコンで隠し、'inline' は # をそのまま表示
 			position = "overlay",
@@ -24,6 +25,9 @@ return {
 				"RenderMarkdownH5",
 				"RenderMarkdownH6",
 			},
+		},
+		bullet = {
+			enabled = false,
 		},
 	},
 }
