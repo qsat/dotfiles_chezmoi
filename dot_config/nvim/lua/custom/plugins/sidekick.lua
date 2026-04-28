@@ -11,6 +11,7 @@ return {
 		},
 		tools = {
 			copilot = { cmd = { "copilot" } },
+			claude = { cmd = { "claude" } },
 			cursor = { cmd = { "cursor-agent" } },
 			aider = { cmd = { "aider" } },
 			crush = { cmd = { "crush" }, keys = { prompt = { "<a-p>", "prompt" } } },
@@ -32,14 +33,21 @@ return {
 		{
 			"<leader>p",
 			function()
-				require("sidekick.cli").toggle({ name = "cursor", focus = true })
+				require("sidekick.cli").toggle({ name = "cursor", focus = false })
+			end,
+			desc = "Sidekick Toggle CLI",
+		},
+		{
+			"<leader>l",
+			function()
+				require("sidekick.cli").toggle({ name = "copilot", focus = true })
 			end,
 			desc = "Sidekick Toggle CLI",
 		},
 		{
 			"<leader>;",
 			function()
-				require("sidekick.cli").toggle({ name = "copilot", focus = true })
+				require("sidekick.cli").toggle({ name = "claude", focus = false })
 			end,
 			desc = "Sidekick Toggle CLI",
 		},
