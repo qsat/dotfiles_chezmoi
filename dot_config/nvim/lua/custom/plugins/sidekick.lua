@@ -33,7 +33,7 @@ return {
 		{
 			"<leader>p",
 			function()
-				require("sidekick.cli").toggle({ name = "cursor", focus = false })
+				require("sidekick.cli").toggle({ name = "cursor", focus = true })
 			end,
 			desc = "Sidekick Toggle CLI",
 		},
@@ -47,7 +47,7 @@ return {
 		{
 			"<leader>;",
 			function()
-				require("sidekick.cli").toggle({ name = "claude", focus = false })
+				require("sidekick.cli").toggle({ name = "claude", focus = true })
 			end,
 			desc = "Sidekick Toggle CLI",
 		},
