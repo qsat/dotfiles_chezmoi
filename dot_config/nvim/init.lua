@@ -27,7 +27,7 @@ require("lazy").setup({
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 			-- { "nvim-java/nvim-java", ft = "java" },
 			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-			{ "j-hui/fidget.nvim", opts = {} },
+			{ "j-hui/fidget.nvim",       opts = {} },
 			{
 				"folke/lazydev.nvim",
 				ft = "lua",
@@ -45,9 +45,9 @@ require("lazy").setup({
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 				callback = function(event)
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+					if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
 						local highlight_augroup =
-							vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+								vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
 						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 							buffer = event.buf,
 							group = highlight_augroup,
@@ -77,17 +77,15 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-			-- 1. tsgo の設定を直接定義 (lspconfig を介さない)
-			local tsgo_config = {
-				cmd = { "tsgo", "lsp" },
-				filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-				-- 警告を避けるため util ではなく直接 lua でルート判定
-				root_dir = vim.fs.root(0, { "package.json", "tsconfig.json", ".git" }),
-			}
-
-			-- 2. サーバーリストと設定
+			-- サーバーごとの上書き設定。既定の cmd / filetypes / root 判定は
+			-- nvim-lspconfig と runtimepath の `lsp/<name>.lua` が持っている。
+			--
+			-- tsc: TypeScript 7 の `tsc --lsp`。lspconfig の既定が node_modules/.bin と
+			-- PATH からバイナリを探し、monorepo のルート判定まで面倒を見るので上書きしない。
+			-- leanls: 定義の実体は lsp/leanls.lua。
 			local servers = {
-				tsgo = tsgo_config,
+				tsc = {},
+				leanls = {},
 				lua_ls = {
 					settings = { Lua = { completion = { callSnippet = "Replace" } } },
 				},
@@ -106,14 +104,14 @@ require("lazy").setup({
 				ensure_installed = { "lua_ls", "eslint" },
 			})
 
-			-- 3. 【重要】新方式 (vim.lsp.enable) でサーバーを起動
-			-- require('lspconfig') を一切使わないことで警告を回避します
-			for server_name, server_config in pairs(servers) do
-				server_config.capabilities = capabilities -- 共通の capabilities
+			-- capabilities は全サーバー共通なので `*` に一度だけ載せる
+			vim.lsp.config("*", { capabilities = capabilities })
 
-				-- Neovim 0.11+ の標準コマンドでセットアップ
-				-- これにより lspconfig の Deprecated 警告トラップを完全にバイパスします
-				vim.lsp.enable(server_name, server_config)
+			-- `vim.lsp.enable` の第2引数は有効/無効の bool であって config ではない。
+			-- 設定は `vim.lsp.config` で登録してから enable する、の2段階で書く。
+			for server_name, server_config in pairs(servers) do
+				vim.lsp.config(server_name, server_config)
+				vim.lsp.enable(server_name)
 			end
 		end,
 	},
