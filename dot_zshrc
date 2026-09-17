@@ -156,10 +156,10 @@ zinit ice wait"0" lucid atinit'eval "$(anyenv init -)"'
 zinit light zdharma-continuum/null
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/Users/01017830/.sdkman"
+# export SDKMAN_DIR="/Users/01017830/.sdkman"
 # [[ -s "/Users/01017830/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/01017830/.sdkman/bin/sdkman-init.sh"
-zinit ice wait'1' lucid
-zinit snippet "$SDKMAN_DIR/bin/sdkman-init.sh"
+# zinit ice wait'1' lucid
+# zinit snippet "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 # 構文のハイライト(https://github.com/zsh-users/zsh-syntax-highlighting)
 zi ice wait"1" lucid
@@ -204,7 +204,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/01017830/ghq/ghe.misosiru.io/sumai/ai_dlc_test/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/01017830/ghq/ghe.misosiru.io/sumai/ai_dlc_test/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/Downloads/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/01017830/ghq/ghe.misosiru.io/sumai/ai_dlc_test/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/01017830/ghq/ghe.misosiru.io/sumai/ai_dlc_test/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"; fi
