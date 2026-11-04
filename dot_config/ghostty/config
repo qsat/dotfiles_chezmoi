@@ -48,3 +48,8 @@ palette = 15=#d2d4de
 
 # [Shell]
 command = /bin/zsh -l -c -i tmuximum
+
+# [Keybind]
+# herdr-tools（ws）: 入力待ち・作業中のエージェントの巡回を Herdr app と同じキーにそろえる。tmux の M-B / M-W に届く
+keybind = cmd+b=text:\x1bB
+keybind = cmd+alt+b=text:\x1bW
