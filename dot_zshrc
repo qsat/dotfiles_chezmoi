@@ -26,7 +26,10 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
   
 alias vim=nvim
 alias awsd='sudo docker run --rm -it -v ~/.aws:/root/.aws -v $PWD:/tmp amazon/aws-cli'
-alias cc=sbx run claude -- --settings ~/.litellm/claude-settings-overlay.json --model claude-sonnet-4-6
+# herdr-tools（ws）: cc で claude を herdr-core で起動し、今の端末で会話する（cc に続けた引数は claude に渡る）
+if [ -f ~/ghq/github.com/qsat/sandbox/herdr-tools/ws/config/cc.sh ]; then
+    source ~/ghq/github.com/qsat/sandbox/herdr-tools/ws/config/cc.sh
+fi
 
 alias vime='vim $(fzf)'
 alias gl="git log --graph --pretty='format:%C(yellow)%h%Creset %C(White)%cd%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset' --date=iso"
