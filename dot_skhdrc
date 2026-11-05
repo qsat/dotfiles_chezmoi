@@ -4,12 +4,6 @@ alt - j  :  yabai -m window --focus south || yabai -m display --focus south
 alt - k  :  yabai -m window --focus north || yabai -m display --focus north
 alt - l  :  yabai -m window --focus east || yabai -m display --focus east
 
-# mirror tree y-axis
-alt - y : yabai -m space --mirror y-axis
-
-# mirror tree x-axis
-alt - x : yabai -m space --mirror x-axis
-
 # rotate tree
 alt - r : yabai -m space --rotate 90
 
@@ -32,25 +26,9 @@ alt - d : DID=$(yabai -m query --displays --display | jq '.id') && \
           yabai -m window --display $NEXT && \
           yabai -m window --focus $WIN_ID
 
-shift + alt - d : WIN_ID=$(yabai -m query --windows --window | jq '.id') && \
-          yabai -m window --display recent && \
-          yabai -m window --focus $WIN_ID
-
 alt - c : SID=$(yabai -m query --spaces | jq -re "reverse | nth(index(map(select(.[\"has-focus\"] == true))) - 1).index") && WIN_ID=$(yabai -m query --windows --window | jq '.id') && yabai -m window --space $SID && yabai -m window --focus $WIN_ID
 
-shift + alt - c : SID=$(yabai -m query --spaces | jq -re "nth(index(map(select(.[\"has-focus\"] == true))) - 1).index") && WIN_ID=$(yabai -m query --windows --window | jq '.id') && yabai -m window --space $SID && yabai -m window --focus $WIN_ID
-
-alt - z : DID=$(yabai -m query --spaces | jq -re "nth(index(map(select(.focused == 1)))).display") && SID=$(yabai -m query --spaces | jq -re "reverse | map(select(.display == $DID)) | nth(index(map(select(.[\"has-focus\"] == true))) - 1).index") && WIN_ID=$(yabai -m query --windows --window | jq '.id') && yabai -m window --space $SID && yabai -m window --focus $WIN_ID
-
 shift + alt - z : DID=$(yabai -m query --spaces | jq -re "nth(index(map(select(.[\"has-focus\"] == true)))).display") && SID=$(yabai -m query --spaces | jq -re "map(select(.display == $DID)) | nth(index(map(select(.[\"has-focus\"] == true))) - 1).index") && WIN_ID=$(yabai -m query --windows --window | jq '.id') && yabai -m window --space $SID && yabai -m window --focus $WIN_ID
-
-alt - q : yabai -m window --space 1
-alt - w : yabai -m window --space 2
-
-shift + alt - h: yabai -m window --grid 1:2:0:0:1:1
-shift + alt - j: yabai -m window --grid 2:1:0:1:1:1
-shift + alt - k: yabai -m window --grid 2:1:1:0:1:1
-shift + alt - l: yabai -m window --grid 1:2:1:0:1:1
 
 # toggle window split type
 alt - e : yabai -m window --toggle split
