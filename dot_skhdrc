@@ -47,10 +47,10 @@ ctrl + alt - k: yabai -m window --resize top:0:-80 || yabai -m window --resize b
 # toggle float（bsp なら float にして全画面、float なら全ウインドウを bsp に戻す）
 ctrl + cmd - f : FLOATING=$(yabai -m query --windows --window | jq '.["is-floating"] // .floating'); if [ "$FLOATING" = "true" ] || [ "$FLOATING" = "1" ]; then yabai -m query --windows --space | jq '.[] | select((.["is-floating"] == true) or (.floating == 1)) | .id' | xargs -I {} yabai -m window {} --toggle float; else yabai -m window --toggle float && yabai -m window --grid 1:1:0:0:1:1; fi
 
-# herdr-tools（ws）: どのアプリが前にあっても、エージェントの会話ペインを blocked → done → idle の順（同じ status では新しい順）に巡回する。shift で逆順
+# herdr-tools（ws）: どのアプリが前にあっても、エージェントの会話ペインを blocked → done → idle の順（同じ status では新しい順）に巡回する。j で次へ、k で逆順
 # （最後に使った tmux クライアントで移動し、Ghostty を前に出す）
-alt - b         : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws next --from-app
-shift + alt - b : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws next --prev --from-app
+ctrl + alt + shift - j : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws next --from-app
+ctrl + alt + shift - k : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws next --prev --from-app
 
 # herdr-tools（ws）: サイドバー（Herdr app の mod）に並んでいる行の順で、1 つ下（j）・1 つ上（k）の行（エージェント・ペイン。worktree の行は飛ばす）へ移る
 shift + alt - j : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws step --from-app
