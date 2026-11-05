@@ -142,3 +142,11 @@ ctrl + alt - k: yabai -m window --resize top:0:-80 || yabai -m window --resize b
 # alt + t で条件分岐を実行（bspならfloat化 / floatなら全ウインドウをbspに戻す）
 ctrl + cmd - f : FLOATING=$(yabai -m query --windows --window | jq '.["is-floating"] // .floating'); if [ "$FLOATING" = "true" ] || [ "$FLOATING" = "1" ]; then yabai -m query --windows --space | jq '.[] | select((.["is-floating"] == true) or (.floating == 1)) | .id' | xargs -I {} yabai -m window {} --toggle float; else yabai -m window --toggle float && yabai -m window --grid 1:1:0:0:1:1; fi
 
+# herdr-tools（ws）: どのアプリが前にあっても、エージェントの会話ペインを巡回する（最後に使った tmux クライアントで移動し、Ghostty を前に出す）
+# 入力待ち（blocked）
+alt - b              : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws next blocked --from-app
+# 作業中（working）
+ctrl + alt - b       : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws next working --from-app
+# 待機中（idle と、応答を終えた done）
+ctrl + alt + cmd - b : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws next idle --from-app
+
