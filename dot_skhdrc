@@ -52,3 +52,7 @@ ctrl + cmd - f : FLOATING=$(yabai -m query --windows --window | jq '.["is-floati
 alt - b         : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws next --from-app
 shift + alt - b : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws next --prev --from-app
 
+# herdr-tools（ws）: サイドバー（Herdr app の mod）に並んでいる行の順で、1 つ下（j）・1 つ上（k）の行（worktree・エージェント・ペイン）へ移る
+shift + alt - j : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws step --from-app
+shift + alt - k : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws step --prev --from-app
+
