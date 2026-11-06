@@ -1,0 +1,7 @@
+# nodenv（anyenv）の shim を PATH に入れる。
+# ~/.zshrc は anyenv を zinit の wait"0" で遅らせて読み込むので、対話しないシェルや
+# tmux・Herdr app・Claude Code から起動したコマンドでは node や tsc が見つからない。
+# zshenv はすべての zsh が読むので、ここで shim だけ先に入れておく（shim は nodenv の場所を絶対パスで持っている）。
+if [[ -d "$HOME/.anyenv/envs/nodenv/shims" && ":$PATH:" != *":$HOME/.anyenv/envs/nodenv/shims:"* ]]; then
+	export PATH="$HOME/.anyenv/envs/nodenv/shims:$PATH"
+fi
