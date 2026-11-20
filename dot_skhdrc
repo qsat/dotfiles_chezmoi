@@ -56,3 +56,6 @@ ctrl + alt + shift - k : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin
 shift + alt - j : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws step --from-app
 shift + alt - k : PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" ws step --prev --from-app
 
+# tmux: 最後に操作した tmux クライアントのセッションの、ほかのウィンドウのペイン（zsh も含む）を、そのクライアントが表示しているウィンドウにまとめる
+ctrl + alt + shift - m : PATH="/opt/homebrew/bin:/usr/local/bin:$PATH" ~/.config/scripts/tmux-join-windows.sh
+
