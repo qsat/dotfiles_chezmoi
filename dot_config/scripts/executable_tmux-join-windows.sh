@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
 # tmux のセッションのほかのウィンドウのペイン（zsh も含む）を、すべて 1 つのウィンドウに移して tiled で並べる。
-# 引数はまとめる先のウィンドウの id。無ければ（skhd から呼んだとき）、最後に操作した tmux クライアントが表示しているウィンドウ
+# 引数はまとめる先のウィンドウの id。無ければ（skhd から呼んだとき）、ws が --from-app で操作するクライアント
+# （最初につながった Ghostty のウインドウ。無ければ最後に操作したクライアント）が表示しているウィンドウ
 set -euo pipefail
+
+first_ghostty_client() {
+  tmux list-clients -F '#{client_created} #{client_termname} #{client_name}' | awk '$2 == "xterm-ghostty"' | sort -n | head -1 | cut -d' ' -f3
+}
+
+most_recent_client() {
+  tmux list-clients -F '#{client_activity} #{client_name}' | sort -rn | head -1 | cut -d' ' -f2
+}
 
 target="${1:-}"
 if [[ -z "$target" ]]; then
-  client=$(tmux list-clients -F '#{client_activity} #{client_name}' | sort -rn | head -1 | cut -d' ' -f2)
+  client=$(first_ghostty_client)
+  [[ -n "$client" ]] || client=$(most_recent_client)
   [[ -n "$client" ]] || exit 0
   target=$(tmux display-message -p -c "$client" '#{window_id}')
 fi
